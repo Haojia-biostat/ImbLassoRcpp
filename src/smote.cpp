@@ -13,7 +13,7 @@ using namespace Rcpp;
 //'@param k number of nearest neighbors to be considered, default value is 5
 //'@param N number of new synthetic examples to be generated for each observation, default value is 9
 //'
-//'@return A matrix of
+//'@return A matrix of new synthetic examples with `N*nrow(X)` rows and `ncol(X)` columns.
 //'
 //'@examples
 //'SMOTE(matrix(rnorm(100), 10))
