@@ -64,17 +64,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// smoteCpp
-NumericMatrix smoteCpp(const NumericMatrix& X, const IntegerVector& y, const int k, const int m);
-RcppExport SEXP _ImbLassoRcpp_smoteCpp(SEXP XSEXP, SEXP ySEXP, SEXP kSEXP, SEXP mSEXP) {
+// //'SMOTE
+//'SMOTE algorithm for imbalanced binary outcome //' //'This function generates synthetic examples for the minority class by kNN and interpolation //' //'@name SMOTE //' //'@param X feature matrix //'@param k number of nearest neighbors to be considered, default value is 5 //'@param N number of new synthetic examples to be generated for each observation, default value is 9 //' //'@return A matrix of //' //'@examples //'SMOTE(matrix(rnorm(100), 10)) //' //'@export  NumericMatrix SMOTE(     const NumericMatrix& X, const int& k, const int& N);
+RcppExport SEXP _ImbLassoRcpp_//'SMOTE(SEXP XSEXP, SEXP kSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const int >::type k(kSEXP);
-    Rcpp::traits::input_parameter< const int >::type m(mSEXP);
-    rcpp_result_gen = Rcpp::wrap(smoteCpp(X, y, k, m));
+    Rcpp::traits::input_parameter< matrix(rnorm(100), 10)) //' //'@export  NumericMatrix SMOTE(     const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const int& >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(//'SMOTE(X, k, N));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -120,7 +119,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ImbLassoRcpp_logit_i", (DL_FUNC) &_ImbLassoRcpp_logit_i, 3},
     {"_ImbLassoRcpp_betamat", (DL_FUNC) &_ImbLassoRcpp_betamat, 5},
     {"_ImbLassoRcpp_prob_i", (DL_FUNC) &_ImbLassoRcpp_prob_i, 1},
-    {"_ImbLassoRcpp_smoteCpp", (DL_FUNC) &_ImbLassoRcpp_smoteCpp, 4},
+    {"_ImbLassoRcpp_//'SMOTE", (DL_FUNC) &_ImbLassoRcpp_//'SMOTE, 3},
     {"_ImbLassoRcpp_soft_thresh", (DL_FUNC) &_ImbLassoRcpp_soft_thresh, 2},
     {"_ImbLassoRcpp_stratifiedCpp", (DL_FUNC) &_ImbLassoRcpp_stratifiedCpp, 3},
     {"_ImbLassoRcpp_weight_i", (DL_FUNC) &_ImbLassoRcpp_weight_i, 1},

@@ -29,8 +29,26 @@ prob_i <- function(logit) {
     .Call('_ImbLassoRcpp_prob_i', PACKAGE = 'ImbLassoRcpp', logit)
 }
 
-smoteCpp <- function(X, y, k, m) {
-    .Call('_ImbLassoRcpp_smoteCpp', PACKAGE = 'ImbLassoRcpp', X, y, k, m)
+#'SMOTE algorithm for imbalanced binary outcome
+#'
+#'This function generates synthetic examples for the minority class by kNN and interpolation
+#'
+#'@name SMOTE
+#'
+#'@param X feature matrix
+#'@param k number of nearest neighbors to be considered, default value is 5
+#'@param N number of new synthetic examples to be generated for each observation, default value is 9
+#'
+#'@return A matrix of
+#'
+#'@examples
+#'SMOTE(matrix(rnorm(100), 10))
+#'
+#'@export
+NULL
+
+//'SMOTE <- function(X, k = 5L, N = 9L) {
+    .Call('_ImbLassoRcpp_//'SMOTE', PACKAGE = 'ImbLassoRcpp', X, k, N)
 }
 
 soft_thresh <- function(z, gamma) {

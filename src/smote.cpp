@@ -3,11 +3,23 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 
-//@name X feature matrix
-//@name k number of nearest neighbors to be considered, default value is 5
-//@name N number of new synthetic examples to be generated, default value is 9
+//'SMOTE algorithm for imbalanced binary outcome
+//'
+//'This function generates synthetic examples for the minority class by kNN and interpolation
+//'
+//'@name SMOTE
+//'
+//'@param X feature matrix
+//'@param k number of nearest neighbors to be considered, default value is 5
+//'@param N number of new synthetic examples to be generated for each observation, default value is 9
+//'
+//'@return A matrix of
+//'
+//'@examples
+//'SMOTE(matrix(rnorm(100), 10))
+//'
+//'@export
 
-// matrix of euclidean distance
 NumericMatrix SMOTE(
     const NumericMatrix& X,
     const int& k = 5,
