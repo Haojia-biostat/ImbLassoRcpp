@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # ImbLassoRcpp
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/UofUEpiBio/ImbLassoRcpp/workflows/R-CMD-check/badge.svg)](https://github.com/UofUEpiBio/ImbLassoRcpp/actions)
 <!-- badges: end -->
 
 The goal of ImbLassoRcpp is to ...
