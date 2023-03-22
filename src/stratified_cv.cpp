@@ -8,13 +8,15 @@ using namespace Rcpp;
 //'
 //'Add details
 //'
+//'@name stratified_cv
+//'
 //'@param y binary outcome, where 1 = positive event and 0 = negative event
 //'@param k number of folds, default value is 10
 //'
 //'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
 //'
-//'@examples
-//'stratified_cv(rbinom(2023, 1, 0.1), 10)
+// '@examples
+// 'stratified_cv(rbinom(2023, 1, 0.1), 10)
 //'
 //'@export
 
