@@ -2,11 +2,13 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//'SMOTE algorithm for imbalanced binary outcome
+//'SMOTE algorithm for minority class
 //'
 //'This function generates synthetic examples for the minority class by kNN and interpolation
 //'
 //'Add details
+//'
+//'@name smote_minor_x
 //'
 //'@param X feature matrix
 //'@param k number of nearest neighbors to be considered, default value is 5
@@ -14,8 +16,8 @@ using namespace Rcpp;
 //'
 //'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
 //'
-//'@examples
-//'SMOTE(matrix(rnorm(100), 10))
+// '@examples
+// 'smote_minor_x(X = matrix(rnorm(100), 10))
 //'
 //'@export
 
