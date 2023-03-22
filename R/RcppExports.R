@@ -13,22 +13,20 @@
 #'
 #'@return A number
 #'
-NULL
-
 #'
 #'@export
 NULL
 
 lambda_gen <- function(X, y, K = 100L) {
-    .Call('_ImbLassoRcpp_lambda_gen', PACKAGE = 'ImbLassoRcpp', X, y, K)
+    .Call(`_ImbLassoRcpp_lambda_gen`, X, y, K)
 }
 
 linear_lasso <- function() {
-    invisible(.Call('_ImbLassoRcpp_linear_lasso', PACKAGE = 'ImbLassoRcpp'))
+    invisible(.Call(`_ImbLassoRcpp_linear_lasso`))
 }
 
 logistic_lasso <- function() {
-    invisible(.Call('_ImbLassoRcpp_logistic_lasso', PACKAGE = 'ImbLassoRcpp'))
+    invisible(.Call(`_ImbLassoRcpp_logistic_lasso`))
 }
 
 #'SMOTE algorithm for minority class
@@ -45,14 +43,12 @@ logistic_lasso <- function() {
 #'
 #'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
 #'
-NULL
-
 #'
 #'@export
 NULL
 
 smote_minor_x <- function(X, k = 5L, N = 9L) {
-    .Call('_ImbLassoRcpp_smote_minor_x', PACKAGE = 'ImbLassoRcpp', X, k, N)
+    .Call(`_ImbLassoRcpp_smote_minor_x`, X, k, N)
 }
 
 #'Stratified cross-validation sampling
@@ -68,13 +64,11 @@ smote_minor_x <- function(X, k = 5L, N = 9L) {
 #'
 #'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
 #'
-NULL
-
 #'
 #'@export
 NULL
 
 stratified_cv <- function(y, k = 10L) {
-    .Call('_ImbLassoRcpp_stratified_cv', PACKAGE = 'ImbLassoRcpp', y, k)
+    .Call(`_ImbLassoRcpp_stratified_cv`, y, k)
 }
 

@@ -14,11 +14,11 @@ using namespace Rcpp;
 //'
 //'@return A number
 //'
-// '@examples
-// 'lambda_gen(matrix(rnorm(1000), ncol = 10), rbinom(100, 1, 0.1))
 //'
 //'@export
 
+// '@examples
+// 'lambda_gen(matrix(rnorm(1000), ncol = 10), rbinom(100, 1, 0.1))
 // [[Rcpp::export]]
 List lambda_gen(
      NumericMatrix X,

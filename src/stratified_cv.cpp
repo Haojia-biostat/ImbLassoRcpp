@@ -15,11 +15,11 @@ using namespace Rcpp;
 //'
 //'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
 //'
-// '@examples
-// 'stratified_cv(rbinom(2023, 1, 0.1), 10)
 //'
 //'@export
 
+// '@examples
+// 'stratified_cv(rbinom(2023, 1, 0.1), 10)
 // [[Rcpp::export]]
 List stratified_cv(
     const NumericVector& y,
