@@ -55,12 +55,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // stratified_cv
-List stratified_cv(const NumericVector& y, const int& k);
+List stratified_cv(const IntegerVector& y, const int& k);
 RcppExport SEXP _ImbLassoRcpp_stratified_cv(SEXP ySEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
     rcpp_result_gen = Rcpp::wrap(stratified_cv(y, k));
     return rcpp_result_gen;

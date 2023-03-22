@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^LICENSE\.md$
+=======
+^\.github$
+Makefile
+>>>>>>> 2a233893eeeab977ab5eb7806bec3fd0006d33ce

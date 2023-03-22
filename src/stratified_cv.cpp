@@ -22,7 +22,7 @@ using namespace Rcpp;
 // 'stratified_cv(rbinom(2023, 1, 0.1), 10)
 // [[Rcpp::export]]
 List stratified_cv(
-    const NumericVector& y,
+    const IntegerVector& y,
     const int& k = 10
 ) {
 
