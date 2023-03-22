@@ -17,10 +17,10 @@ using namespace Rcpp;
 //'@examples
 //'SMOTE(matrix(rnorm(100), 10))
 //'
-//'@export SMOTE
+//'@export
 
 // [[Rcpp::export]]
-List SMOTE(
+List smote_minor_x(
   const NumericMatrix& X,
   const int& k = 5,
   const int& N = 9
@@ -68,26 +68,29 @@ List SMOTE(
     euclidean_distance(i, _) = euclidean_distance_i;
 
     // sort indices by Euclidean distance
-    IntegerVector sorted_ind = seq(0, n-1);
-    std::sort(sorted_ind.begin(), sorted_ind.end(), [&euclidean_distance_i](int a, int b) { return euclidean_distance_i(a) < euclidean_distance_i(b); });
+    IntegerVector distance_sorted_ind = seq(0, n-1);
+    std::sort(
+      distance_sorted_ind.begin(), distance_sorted_ind.end(),
+      [&euclidean_distance_i](int a, int b) { return euclidean_distance_i(a) < euclidean_distance_i(b); }
+    );
 
     // select top k indices
     IntegerVector k_seq = seq(1, k);
-    IntegerVector knn_ind = sorted_ind[k_seq];
+    IntegerVector knn_ind = distance_sorted_ind[k_seq];
     k_nearest_neighbors(i, _) = knn_ind + 1;
 
-    // sample N from k
-    IntegerVector synN_ind;
+    // sample N from k neighbors
+    IntegerVector nnn_ind;
     if(N <= k)
-      synN_ind = sample(knn_ind, N, false);
+      nnn_ind = sample(knn_ind, N, false);
     else
-      synN_ind = sample(knn_ind, N, true);
+      nnn_ind = sample(knn_ind, N, true);
 
     for(int m = 0; m < N; ++m) {
 
       for(int k = 0; k < p; ++k) {
         // generate synthetic example by interpolation
-        synthetic_examples(synthetic_ind, k) = x(k) + random_num[synthetic_ind] * difference(synN_ind[m], k);
+        synthetic_examples(synthetic_ind, k) = x(k) + random_num[synthetic_ind] * difference(nnn_ind[m], k);
       }
 
       synthetic_ind += 1;
