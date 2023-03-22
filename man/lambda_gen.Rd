@@ -3,9 +3,6 @@
 \name{lambda_gen}
 \alias{lambda_gen}
 \title{calculate the entry level of lambda}
-\usage{
-lambda_gen(X, y, K = 100L)
-}
 \arguments{
 \item{X}{input matrix, of dimension nobs x nvars; each row is an observation vector.}
 
@@ -18,8 +15,4 @@ A number
 }
 \description{
 Calculate the smallest value for which all the beta equal to 0.
-}
-\examples{
-lambda_gen(matrix(rnorm(1000), ncol = 10), rbinom(100, 1, 0.1))
-
 }

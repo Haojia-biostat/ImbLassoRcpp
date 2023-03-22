@@ -10,120 +10,69 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// coord_desc
-NumericVector coord_desc(NumericMatrix X, NumericVector y, double lambda, double thresh, int maxit);
-RcppExport SEXP _ImbLassoRcpp_coord_desc(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP, SEXP threshSEXP, SEXP maxitSEXP) {
+// lambda_gen
+List lambda_gen(NumericMatrix X, NumericVector y, int K);
+RcppExport SEXP _ImbLassoRcpp_lambda_gen(SEXP XSEXP, SEXP ySEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< double >::type thresh(threshSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    rcpp_result_gen = Rcpp::wrap(coord_desc(X, y, lambda, thresh, maxit));
+    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    rcpp_result_gen = Rcpp::wrap(lambda_gen(X, y, K));
     return rcpp_result_gen;
 END_RCPP
 }
-// logit_i
-NumericVector logit_i(NumericMatrix X, double b0, NumericVector b);
-RcppExport SEXP _ImbLassoRcpp_logit_i(SEXP XSEXP, SEXP b0SEXP, SEXP bSEXP) {
+// linear_lasso
+void linear_lasso();
+RcppExport SEXP _ImbLassoRcpp_linear_lasso() {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< double >::type b0(b0SEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(logit_i(X, b0, b));
-    return rcpp_result_gen;
+    linear_lasso();
+    return R_NilValue;
 END_RCPP
 }
-// betamat
-mat betamat(NumericMatrix X, NumericVector y, double lambda, double thresh, int maxit);
-RcppExport SEXP _ImbLassoRcpp_betamat(SEXP XSEXP, SEXP ySEXP, SEXP lambdaSEXP, SEXP threshSEXP, SEXP maxitSEXP) {
+// logistic_lasso
+void logistic_lasso();
+RcppExport SEXP _ImbLassoRcpp_logistic_lasso() {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< double >::type thresh(threshSEXP);
-    Rcpp::traits::input_parameter< int >::type maxit(maxitSEXP);
-    rcpp_result_gen = Rcpp::wrap(betamat(X, y, lambda, thresh, maxit));
-    return rcpp_result_gen;
+    logistic_lasso();
+    return R_NilValue;
 END_RCPP
 }
-// prob_i
-NumericVector prob_i(NumericVector logit);
-RcppExport SEXP _ImbLassoRcpp_prob_i(SEXP logitSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type logit(logitSEXP);
-    rcpp_result_gen = Rcpp::wrap(prob_i(logit));
-    return rcpp_result_gen;
-END_RCPP
-}
-// smoteCpp
-NumericMatrix smoteCpp(const NumericMatrix& X, const IntegerVector& y, const int k, const int m);
-RcppExport SEXP _ImbLassoRcpp_smoteCpp(SEXP XSEXP, SEXP ySEXP, SEXP kSEXP, SEXP mSEXP) {
+// smote_minor_x
+List smote_minor_x(const NumericMatrix& X, const int& k, const int& N);
+RcppExport SEXP _ImbLassoRcpp_smote_minor_x(SEXP XSEXP, SEXP kSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const int >::type k(kSEXP);
-    Rcpp::traits::input_parameter< const int >::type m(mSEXP);
-    rcpp_result_gen = Rcpp::wrap(smoteCpp(X, y, k, m));
+    Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const int& >::type N(NSEXP);
+    rcpp_result_gen = Rcpp::wrap(smote_minor_x(X, k, N));
     return rcpp_result_gen;
 END_RCPP
 }
-// soft_thresh
-double soft_thresh(double z, double gamma);
-RcppExport SEXP _ImbLassoRcpp_soft_thresh(SEXP zSEXP, SEXP gammaSEXP) {
+// stratified_cv
+List stratified_cv(const NumericVector& y, const int& k);
+RcppExport SEXP _ImbLassoRcpp_stratified_cv(SEXP ySEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type z(zSEXP);
-    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
-    rcpp_result_gen = Rcpp::wrap(soft_thresh(z, gamma));
-    return rcpp_result_gen;
-END_RCPP
-}
-// stratifiedCpp
-List stratifiedCpp(const NumericMatrix& X, const IntegerVector& y, const int size);
-RcppExport SEXP _ImbLassoRcpp_stratifiedCpp(SEXP XSEXP, SEXP ySEXP, SEXP sizeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const int >::type size(sizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(stratifiedCpp(X, y, size));
-    return rcpp_result_gen;
-END_RCPP
-}
-// weight_i
-NumericVector weight_i(NumericVector prob);
-RcppExport SEXP _ImbLassoRcpp_weight_i(SEXP probSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type prob(probSEXP);
-    rcpp_result_gen = Rcpp::wrap(weight_i(prob));
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
+    rcpp_result_gen = Rcpp::wrap(stratified_cv(y, k));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_ImbLassoRcpp_coord_desc", (DL_FUNC) &_ImbLassoRcpp_coord_desc, 5},
-    {"_ImbLassoRcpp_logit_i", (DL_FUNC) &_ImbLassoRcpp_logit_i, 3},
-    {"_ImbLassoRcpp_betamat", (DL_FUNC) &_ImbLassoRcpp_betamat, 5},
-    {"_ImbLassoRcpp_prob_i", (DL_FUNC) &_ImbLassoRcpp_prob_i, 1},
-    {"_ImbLassoRcpp_smoteCpp", (DL_FUNC) &_ImbLassoRcpp_smoteCpp, 4},
-    {"_ImbLassoRcpp_soft_thresh", (DL_FUNC) &_ImbLassoRcpp_soft_thresh, 2},
-    {"_ImbLassoRcpp_stratifiedCpp", (DL_FUNC) &_ImbLassoRcpp_stratifiedCpp, 3},
-    {"_ImbLassoRcpp_weight_i", (DL_FUNC) &_ImbLassoRcpp_weight_i, 1},
+    {"_ImbLassoRcpp_lambda_gen", (DL_FUNC) &_ImbLassoRcpp_lambda_gen, 3},
+    {"_ImbLassoRcpp_linear_lasso", (DL_FUNC) &_ImbLassoRcpp_linear_lasso, 0},
+    {"_ImbLassoRcpp_logistic_lasso", (DL_FUNC) &_ImbLassoRcpp_logistic_lasso, 0},
+    {"_ImbLassoRcpp_smote_minor_x", (DL_FUNC) &_ImbLassoRcpp_smote_minor_x, 3},
+    {"_ImbLassoRcpp_stratified_cv", (DL_FUNC) &_ImbLassoRcpp_stratified_cv, 2},
     {NULL, NULL, 0}
 };
 
