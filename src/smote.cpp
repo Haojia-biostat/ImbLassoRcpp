@@ -1,51 +1,56 @@
+
 #include <Rcpp.h>
 using namespace Rcpp;
-
-// [[Rcpp::export]]
 
 //'SMOTE algorithm for imbalanced binary outcome
 //'
 //'This function generates synthetic examples for the minority class by kNN and interpolation
 //'
-//'@name SMOTE
+//'Add details
 //'
 //'@param X feature matrix
 //'@param k number of nearest neighbors to be considered, default value is 5
 //'@param N number of new synthetic examples to be generated for each observation, default value is 9
 //'
-//'@return A matrix of new synthetic examples with `N*nrow(X)` rows and `ncol(X)` columns.
+//'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
 //'
 //'@examples
 //'SMOTE(matrix(rnorm(100), 10))
 //'
-//'@export
+//'@export SMOTE
 
-NumericMatrix SMOTE(
-    const NumericMatrix& X,
-    const int& k = 5,
-    const int& N = 9
+// [[Rcpp::export]]
+List SMOTE(
+  const NumericMatrix& X,
+  const int& k = 5,
+  const int& N = 9
 ) {
   int n = X.nrow();
   int p = X.ncol();
 
   if(k > n-1)
-    stop("k (number of nearest neighbors) is larger than the number of observations - 1. Please select a smaller k value.");
+   stop("k (number of nearest neighbors) is larger than the number of observations - 1. Please select a smaller k value.");
+
+  // initialize matrix of Euclidean distance
+  NumericMatrix euclidean_distance(n, n);
+  // initialize matrix of kNN
+  IntegerMatrix k_nearest_neighbors(n, k);
 
   // initialize matrix of synthetic examples
-  NumericMatrix new_synthetic_examples(n*N, p);
+  NumericMatrix synthetic_examples(n*N, p);
   // initialize row index of output matrix
-  int row_ind = 0;
+  int synthetic_ind = 0;
   // initialize vector of random number between 0 and 1
-  NumericVector rand_vec = runif(n*N);
+  NumericVector random_num = runif(n*N);
 
   for(int i = 0; i < n; ++i) {
 
     NumericVector x = X(i, _);
 
-    // matrix of difference
+    // initialize matrix of difference
     NumericMatrix difference(n, p);
-    // vector of Euclidean distance
-    NumericVector euclidean_vec(n);
+    // initialize vector of Euclidean distance
+    NumericVector euclidean_distance_i(n);
 
     for(int j = 0; j < n; ++j) {
 
@@ -53,20 +58,23 @@ NumericMatrix SMOTE(
       double cum_sqdiff = 0;
 
       for(int k = 0; k < p; ++k) {
-        difference(j,k) = X(j,k) - x[k];
-        cum_sqdiff += pow(X(j,k) - x[k], 2);
+        difference(j,k) = X(j,k) - x(k);
+        cum_sqdiff += pow(X(j,k) - x(k), 2);
       }
 
-      euclidean_vec[k] = sqrt(cum_sqdiff);
+      euclidean_distance_i(j) = sqrt(cum_sqdiff);
     }
+
+    euclidean_distance(i, _) = euclidean_distance_i;
 
     // sort indices by Euclidean distance
     IntegerVector sorted_ind = seq(0, n-1);
-    std::sort(sorted_ind.begin(), sorted_ind.end(), [&euclidean_vec](int a, int b) { return euclidean_vec[a] < euclidean_vec[b]; });
+    std::sort(sorted_ind.begin(), sorted_ind.end(), [&euclidean_distance_i](int a, int b) { return euclidean_distance_i(a) < euclidean_distance_i(b); });
 
     // select top k indices
     IntegerVector k_seq = seq(1, k);
     IntegerVector knn_ind = sorted_ind[k_seq];
+    k_nearest_neighbors(i, _) = knn_ind + 1;
 
     // sample N from k
     IntegerVector synN_ind;
@@ -79,14 +87,21 @@ NumericMatrix SMOTE(
 
       for(int k = 0; k < p; ++k) {
         // generate synthetic example by interpolation
-        new_synthetic_examples(row_ind, k) = x[k] + rand_vec[row_ind] * difference(synN_ind[m], k);
+        synthetic_examples(synthetic_ind, k) = x(k) + random_num[synthetic_ind] * difference(synN_ind[m], k);
       }
 
-      row_ind += 1;
+      synthetic_ind += 1;
     }
 
   }
 
-  return new_synthetic_examples;
+  return List::create(
+    _["X"] = X,
+    _["k"] = k,
+    _["N"] = N,
+    _["kNN"] = k_nearest_neighbors,
+    _["Euclidean"] = euclidean_distance,
+    _["Synthetic"] = synthetic_examples
+  );
 
 }
