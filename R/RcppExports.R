@@ -18,15 +18,15 @@
 NULL
 
 lambda_gen <- function(X, y, K = 100L) {
-    .Call(`_ImbLassoRcpp_lambda_gen`, X, y, K)
+    .Call('_ImbLassoRcpp_lambda_gen', PACKAGE = 'ImbLassoRcpp', X, y, K)
 }
 
 linear_lasso <- function() {
-    invisible(.Call(`_ImbLassoRcpp_linear_lasso`))
+    invisible(.Call('_ImbLassoRcpp_linear_lasso', PACKAGE = 'ImbLassoRcpp'))
 }
 
 logistic_lasso <- function() {
-    invisible(.Call(`_ImbLassoRcpp_logistic_lasso`))
+    invisible(.Call('_ImbLassoRcpp_logistic_lasso', PACKAGE = 'ImbLassoRcpp'))
 }
 
 #'SMOTE algorithm for minority class
@@ -48,7 +48,7 @@ logistic_lasso <- function() {
 NULL
 
 smote_minor_x <- function(X, k = 5L, N = 9L) {
-    .Call(`_ImbLassoRcpp_smote_minor_x`, X, k, N)
+    .Call('_ImbLassoRcpp_smote_minor_x', PACKAGE = 'ImbLassoRcpp', X, k, N)
 }
 
 #'Stratified cross-validation sampling
@@ -69,6 +69,6 @@ smote_minor_x <- function(X, k = 5L, N = 9L) {
 #' @examples
 #' stratified_cv(rbinom(2023, 1, 0.1), 10)
 stratified_cv <- function(y, k = 10L) {
-    .Call(`_ImbLassoRcpp_stratified_cv`, y, k)
+    .Call('_ImbLassoRcpp_stratified_cv', PACKAGE = 'ImbLassoRcpp', y, k)
 }
 

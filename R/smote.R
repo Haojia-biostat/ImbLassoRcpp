@@ -14,7 +14,7 @@
 #' 2. Synthetic new examples for the minority class by interpolate N values out of k nearest neighbors identified by Euclidean distance (nobs = \code{sum(y)*N})
 #' 3. Sampled observations with replacement of the majority class (nobs = \code{sum(y)\*(N+1)\*(R)})
 #'
-#' @example
+#' @examples
 #' X <- matrix(rnorm(1000), ncol = 10)
 #' y <- rbinom(100, 1, 0.1)
 #' table(y)
