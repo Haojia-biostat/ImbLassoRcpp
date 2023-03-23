@@ -66,8 +66,8 @@ smote_minor_x <- function(X, k = 5L, N = 9L) {
 #'
 #'
 #'@export
-NULL
-
+#' @examples
+#' stratified_cv(rbinom(2023, 1, 0.1), 10)
 stratified_cv <- function(y, k = 10L) {
     .Call(`_ImbLassoRcpp_stratified_cv`, y, k)
 }

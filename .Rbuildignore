@@ -1,9 +1,17 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ef8336e62adc17a5f3f75a64aa0c0ccf99ccda56
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^LICENSE\.md$
+<<<<<<< HEAD
 =======
 ^\.github$
 Makefile
 >>>>>>> 2a233893eeeab977ab5eb7806bec3fd0006d33ce
+=======
+Makefile
+
+>>>>>>> ef8336e62adc17a5f3f75a64aa0c0ccf99ccda56

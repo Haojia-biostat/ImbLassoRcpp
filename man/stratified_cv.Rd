@@ -3,6 +3,9 @@
 \name{stratified_cv}
 \alias{stratified_cv}
 \title{Stratified cross-validation sampling}
+\usage{
+stratified_cv(y, k = 10L)
+}
 \arguments{
 \item{y}{binary outcome, where 1 = positive event and 0 = negative event}
 
@@ -16,4 +19,7 @@ This function assigns observations to k-fold cross validation.
 }
 \details{
 Add details
+}
+\examples{
+stratified_cv(rbinom(2023, 1, 0.1), 10)
 }
