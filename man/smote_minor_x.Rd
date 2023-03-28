@@ -3,6 +3,9 @@
 \name{smote_minor_x}
 \alias{smote_minor_x}
 \title{SMOTE algorithm for minority class}
+\usage{
+smote_minor_x(X, k = 5L, N = 9L)
+}
 \arguments{
 \item{X}{feature matrix}
 
@@ -18,4 +21,7 @@ This function generates synthetic examples for the minority class by kNN and int
 }
 \details{
 Add details
+}
+\examples{
+smote_minor_x(X = matrix(rnorm(100), 10))
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/smote.R
 \name{smote}
 \alias{smote}
-\title{Generate balanced data ready for analysis}
+\title{Generate SMOTEd data ready for analysis}
 \usage{
 smote(X, y, k = 5, N = 9, R = 1)
 }

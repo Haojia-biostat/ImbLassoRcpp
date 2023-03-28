@@ -17,16 +17,16 @@ using namespace Rcpp;
 //'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
 //'
 //'
-//'@export
-
-// '@examples
-// 'smote_minor_x(X = matrix(rnorm(100), 10))
+//' @export
+//' @examples
+//' smote_minor_x(X = matrix(rnorm(100), 10))
 // [[Rcpp::export]]
 List smote_minor_x(
   const NumericMatrix& X,
   const int& k = 5,
   const int& N = 9
 ) {
+
   int n = X.nrow();
   int p = X.ncol();
 

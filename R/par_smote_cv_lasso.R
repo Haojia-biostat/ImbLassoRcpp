@@ -43,8 +43,9 @@ par_smote_cv_lasso <- function(
 
   cores <- min(length(X$test), parallel::detectCores() - 1)
   cl <- parallel::makeCluster(cores)
+  on.exit(parallel::stopCluster(cl))
   parallel::clusterExport(cl, "X")
-  res <- parallel::parSapply(cl, seq(length(X$test)) \(i) {
+  res <- parallel::parSapply(cl, seq(length(X$test)), \(i) {
     testdata <- X$test[[i]]
     traindata <- X$train[[i]]
     nX <- ncol(testdata) - 1
@@ -52,6 +53,7 @@ par_smote_cv_lasso <- function(
     pred <- pred(fit, newx = testdata[, 1:nX], s = lambda)
     apply(pred, 2, \(x) mean((x-testdata[, nx+1]) ^ 2))
   })
+
 
   class(res) <- c("smote_cv_mseMatrix", "matrix")
   return(res)
