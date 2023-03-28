@@ -1,4 +1,4 @@
-#' Generate balanced data ready for analysis
+#' Generate SMOTEd data ready for analysis
 #'
 #' This function generates the full SMOTEd dataset with both positive and negative outcome
 #'
@@ -30,6 +30,9 @@ smote <- function(
     N = 9,
     R = 1
 ) {
+  # if y is not a vector, convert it to a vector
+  if(is.matrix(y)) y <- as.matrix(y)
+  if(is.data.frame(y)) y <- unlist(y)
   # check size of X and y
   if(length(y) != nrow(X))
     stop("Length of outcome y is different from number of rows in X.")
@@ -48,9 +51,10 @@ smote <- function(
   res <- rbind(
     cbind(X[sample(which(y == 0), R*(N+1)*sum(y), replace = T),], 0),
     cbind(X[which(y == 1),], 1),
-    cbind(smote_minor_x(X[which(y == 1),], k = k, N = N), 1)
+    cbind(smote_minor_x(X[which(y == 1),], k = k, N = N)$Synthetic, 1)
   ) |> as.data.frame()
 
+  if(is.null(colnames(X))) colnames(X) <- paste0("V", 1:ncol(X))
   colnames(res) <- c(colnames(X), "y")
   return(res)
 
