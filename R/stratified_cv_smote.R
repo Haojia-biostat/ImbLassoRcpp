@@ -67,7 +67,7 @@ stratified_cv_smote <- function(
     )
 
   # define class of the output
-  class(res) <- c("smote_cv_datalist", "list")
+  class(res) <- c("smote_cv_dataList", "list")
 
   return(res)
 }
