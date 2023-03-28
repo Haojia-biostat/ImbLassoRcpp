@@ -29,8 +29,11 @@ stratified_cv_smote <- function(
   # check class of X and y
   if(is.null(dim(X)))
     stop("Input X should be a matrix.")
-  if(is.matrix(y)) y <- as.matrix(y)
-  if(is.data.frame(y)) y <- unlist(y)
+  if(is.data.frame(y)) y <- as.matrix(y)
+  if(is.matrix(y)) {
+    if(min(dim(y)) == 1) y <- as.vector(y)
+    else stop("Input y should be a vector.")
+  }
   # check size of X and y
   if(length(y) != nrow(X))
     stop("Length of outcome y is different from number of rows in X.")
@@ -58,5 +61,13 @@ stratified_cv_smote <- function(
     cbind(X[fold == i,], y[fold == i]) |> as.data.frame() |> setNames(c(colnames(X), "y"))
   })
 
-  return(list(train = train_list, test = test_list))
+  res <- list(
+    train = lapply(1:k_cv, \(i) smote(X = X[fold != i,], y = y[fold != i], k = k_nn, N = N, R = R)),
+    test = lapply(1:k_cv, \(i) cbind(X[fold == i,], y[fold == i]) |> as.data.frame() |> setNames(c(colnames(X), "y")))
+    )
+
+  # define class of the output
+  class(res) <- c("smote_cv_datalist", "list")
+
+  return(res)
 }

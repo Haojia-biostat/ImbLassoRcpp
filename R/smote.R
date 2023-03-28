@@ -30,9 +30,14 @@ smote <- function(
     N = 9,
     R = 1
 ) {
-  # if y is not a vector, convert it to a vector
-  if(is.matrix(y)) y <- as.matrix(y)
-  if(is.data.frame(y)) y <- unlist(y)
+  # check class of X and y
+  if(is.null(dim(X)))
+    stop("Input X should be a matrix.")
+  if(is.data.frame(y)) y <- as.matrix(y)
+  if(is.matrix(y)) {
+    if(min(dim(y)) == 1) y <- as.vector(y)
+    else stop("Input y should be a vector.")
+  }
   # check size of X and y
   if(length(y) != nrow(X))
     stop("Length of outcome y is different from number of rows in X.")
