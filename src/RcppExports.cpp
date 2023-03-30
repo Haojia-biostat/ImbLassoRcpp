@@ -12,34 +12,16 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // lambda_gen
-List lambda_gen(NumericMatrix X, NumericVector y, int K);
+List lambda_gen(const NumericMatrix& X, const NumericVector& y, const int& K);
 RcppExport SEXP _ImbLassoRcpp_lambda_gen(SEXP XSEXP, SEXP ySEXP, SEXP KSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< int >::type K(KSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const int& >::type K(KSEXP);
     rcpp_result_gen = Rcpp::wrap(lambda_gen(X, y, K));
     return rcpp_result_gen;
-END_RCPP
-}
-// linear_lasso
-void linear_lasso();
-RcppExport SEXP _ImbLassoRcpp_linear_lasso() {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    linear_lasso();
-    return R_NilValue;
-END_RCPP
-}
-// logistic_lasso
-void logistic_lasso();
-RcppExport SEXP _ImbLassoRcpp_logistic_lasso() {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    logistic_lasso();
-    return R_NilValue;
 END_RCPP
 }
 // smote_minor_x
@@ -56,24 +38,23 @@ BEGIN_RCPP
 END_RCPP
 }
 // stratified_cv
-List stratified_cv(const IntegerVector& y, const int& k);
-RcppExport SEXP _ImbLassoRcpp_stratified_cv(SEXP ySEXP, SEXP kSEXP) {
+IntegerVector stratified_cv(const IntegerVector& y, const int& k, const bool& stratified);
+RcppExport SEXP _ImbLassoRcpp_stratified_cv(SEXP ySEXP, SEXP kSEXP, SEXP stratifiedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const IntegerVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const int& >::type k(kSEXP);
-    rcpp_result_gen = Rcpp::wrap(stratified_cv(y, k));
+    Rcpp::traits::input_parameter< const bool& >::type stratified(stratifiedSEXP);
+    rcpp_result_gen = Rcpp::wrap(stratified_cv(y, k, stratified));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ImbLassoRcpp_lambda_gen", (DL_FUNC) &_ImbLassoRcpp_lambda_gen, 3},
-    {"_ImbLassoRcpp_linear_lasso", (DL_FUNC) &_ImbLassoRcpp_linear_lasso, 0},
-    {"_ImbLassoRcpp_logistic_lasso", (DL_FUNC) &_ImbLassoRcpp_logistic_lasso, 0},
     {"_ImbLassoRcpp_smote_minor_x", (DL_FUNC) &_ImbLassoRcpp_smote_minor_x, 3},
-    {"_ImbLassoRcpp_stratified_cv", (DL_FUNC) &_ImbLassoRcpp_stratified_cv, 2},
+    {"_ImbLassoRcpp_stratified_cv", (DL_FUNC) &_ImbLassoRcpp_stratified_cv, 3},
     {NULL, NULL, 0}
 };
 

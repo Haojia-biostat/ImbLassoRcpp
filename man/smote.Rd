@@ -18,7 +18,7 @@ smote(X, y, k = 5, N = 9, R = 1)
 \item{R}{size ratio of the majority class to be sampled to the SMOTEd minority class, default value is 1 so that the two classes are balanced}
 }
 \description{
-This function generates the full SMOTEd dataset with both positive and negative outcome
+This function generates the full SMOTEd dataset with both positive and negative outcome.
 }
 \details{
 The output dataset is consist of three parts:

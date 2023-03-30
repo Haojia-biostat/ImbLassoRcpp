@@ -49,9 +49,9 @@ par_smote_cv_lasso <- function(
     testdata <- X$test[[i]]
     traindata <- X$train[[i]]
     nX <- ncol(testdata) - 1
-    fit <- glmnet(traindata[, 1:nX], traindata[, nx+1], family = "binomial", lambda = lambda, thresh = thresh, maxit = maxit, ...)
+    fit <- glmnet(traindata[, 1:nX], traindata[, nX+1], family = "binomial", lambda = lambda, thresh = thresh, maxit = maxit, ...)
     pred <- pred(fit, newx = testdata[, 1:nX], s = lambda)
-    apply(pred, 2, \(x) mean((x-testdata[, nx+1]) ^ 2))
+    apply(pred, 2, \(x) mean((x-testdata[, nX+1]) ^ 2))
   })
 
 

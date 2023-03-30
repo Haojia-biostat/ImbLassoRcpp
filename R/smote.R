@@ -1,6 +1,6 @@
 #' Generate SMOTEd data ready for analysis
 #'
-#' This function generates the full SMOTEd dataset with both positive and negative outcome
+#' This function generates the full SMOTEd dataset with both positive and negative outcome.
 #'
 #' @param X feature matrix
 #' @param y binary outcome, where 1 = positive event & minority class and 0 = negative event & majority class
