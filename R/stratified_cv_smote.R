@@ -1,13 +1,19 @@
-#' Generate list of SMOTEd training data and test data for k-fold CV
+#' Generate list of training data for k-fold cross-validation
 #'
-#' This function generates a list of data sets for k-fold CV and apply SMOTE algorithm to the training set in each fold. The output will be used for parameter tuning of \eqn{\lambda} in LASSO regression.
+#' This function prepares the data of cross-validation for parameter tuning of \eqn{\lambda} in LASSO regression. It provides options of whether to use stratified cross-validation on the input data or SMOTE algorithm on the training sets.
 #'
 #' @param X feature matrix
 #' @param y binary outcome, where 1 = positive event & minority class and 0 = negative event & majority class
 #' @param k_cv number of folds for the cross-validation ,default value is 10
+#' @param stratified logical flag for whether to ensure that each fold contains a proportional representation of each class or stratum, default value is TRUE
+#' @param SMOTE logical flag for whether to apply SMOTE to the training set, default value is TRUE
 #' @param k_nn number of nearest neighbors to be considered, default value is 5
 #' @param N number of new synthetic examples to be generated for each observation, default value is 9
 #' @param R size ratio of the majority class to be sampled to the SMOTEd minority class, default value is 1 so that the two classes are balanced
+#'
+#' @return An object with class \code{"cv_smote_dataList"} including:
+#' \item{train}{a list containing \code{k} training datasets, with or without SMOTE applied}
+#' \item{test}{a list containing \code{k} test datasets}
 #'
 #' @examples
 #' \dontrun{
@@ -22,6 +28,8 @@ stratified_cv_smote <- function(
     X,
     y,
     k_cv = 10,
+    stratified = T,
+    SMOTE = T,
     k_nn = 5,
     N = 9,
     R = 1
@@ -50,24 +58,23 @@ stratified_cv_smote <- function(
     warning(paste0("The proportion of the positive outcome (", round(100*mean(y), 1), "%) is larger than 20%, SMOTE might not be necessary."))
 
   # stratified cross-validation
-  fold <- stratified_cv(y, k_cv)$Fold
+  fold <- stratified_cv(y, k_cv, stratified = stratified)
 
-  # apply SMOTE for the training set in each fold
   if(is.null(colnames(X))) colnames(X) <- paste0("V", 1:ncol(X))
-  train_list <- lapply(1:k_cv, \(i) {
-    smote(X = X[fold != i,], y = y[fold != i], k = k_nn, N = N, R = R)
-  })
-  test_list <- lapply(1:k_cv, \(i) {
-    cbind(X[fold == i,], y[fold == i]) |> as.data.frame() |> setNames(c(colnames(X), "y"))
-  })
 
-  res <- list(
-    train = lapply(1:k_cv, \(i) smote(X = X[fold != i,], y = y[fold != i], k = k_nn, N = N, R = R)),
-    test = lapply(1:k_cv, \(i) cbind(X[fold == i,], y[fold == i]) |> as.data.frame() |> setNames(c(colnames(X), "y")))
-    )
+  # initialize output
+  res <- vector(mode = "list", length = 2)
+  names(res) <- c("train", "test")
+
+  if(SMOTE)
+    res$train <- lapply(1:k_cv, \(i) smote(X = X[fold != i,], y = y[fold != i], k = k_nn, N = N, R = R))
+  else
+    res$train <- lapply(1:k_cv, \(i) cbind(X[fold != i,], y[fold != i]) |> as.data.frame() |> stats::setNames(c(colnames(X), "y")))
+
+  res$test <- lapply(1:k_cv, \(i) cbind(X[fold == i,], y[fold == i]) |> as.data.frame() |> stats::setNames(c(colnames(X), "y")))
 
   # define class of the output
-  class(res) <- c("smote_cv_dataList", "list")
+  class(res) <- c("cv_smote_dataList", "list")
 
   return(res)
 }
