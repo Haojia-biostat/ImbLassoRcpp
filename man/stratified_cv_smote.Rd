@@ -2,9 +2,18 @@
 % Please edit documentation in R/stratified_cv_smote.R
 \name{stratified_cv_smote}
 \alias{stratified_cv_smote}
-\title{Generate list of SMOTEd training data and test data for k-fold CV}
+\title{Generate list of training data for k-fold cross-validation}
 \usage{
-stratified_cv_smote(X, y, k_cv = 10, k_nn = 5, N = 9, R = 1)
+stratified_cv_smote(
+  X,
+  y,
+  k_cv = 10,
+  stratified = T,
+  SMOTE = T,
+  k_nn = 5,
+  N = 9,
+  R = 1
+)
 }
 \arguments{
 \item{X}{feature matrix}
@@ -13,14 +22,23 @@ stratified_cv_smote(X, y, k_cv = 10, k_nn = 5, N = 9, R = 1)
 
 \item{k_cv}{number of folds for the cross-validation ,default value is 10}
 
+\item{stratified}{logical flag for whether to ensure that each fold contains a proportional representation of each class or stratum, default value is TRUE}
+
+\item{SMOTE}{logical flag for whether to apply SMOTE to the training set, default value is TRUE}
+
 \item{k_nn}{number of nearest neighbors to be considered, default value is 5}
 
 \item{N}{number of new synthetic examples to be generated for each observation, default value is 9}
 
 \item{R}{size ratio of the majority class to be sampled to the SMOTEd minority class, default value is 1 so that the two classes are balanced}
 }
+\value{
+An object with class \code{"cv_smote_dataList"} including:
+\item{train}{a list containing \code{k} training datasets, with or without SMOTE applied}
+\item{test}{a list containing \code{k} test datasets}
+}
 \description{
-This function generates a list of data sets for k-fold CV and apply SMOTE algorithm to the training set in each fold. The output will be used for parameter tuning of \eqn{\lambda} in LASSO regression.
+This function prepares the data of cross-validation for parameter tuning of \eqn{\lambda} in LASSO regression. It provides options of whether to use stratified cross-validation on the input data or SMOTE algorithm on the training sets.
 }
 \examples{
 \dontrun{
