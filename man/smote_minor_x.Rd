@@ -36,8 +36,8 @@ by Euclidean distance, and the following steps will be repeated for \code{N} tim
 5. If \code{k < N}, put the neighbor back to the sampling pool.
 }
 \examples{
-X <- matrix(rnorm(100), 10)
-smote_minor_x(X)
+X <- matrix(rnorm(50), ncol = 10)
+smote_minor_x(X, k = 3, N = 2)
 
 }
 \references{

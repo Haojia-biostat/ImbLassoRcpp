@@ -23,7 +23,7 @@ based on the feature matrix \code{X} and binary outcome \code{y}.
 \examples{
 X <- matrix(rnorm(1000), ncol = 10)
 y <- rbinom(100, 1, 0.1)
-lambda_gen(X, y)
+lambda_gen(X, y, K = 15)
 
 }
 \references{
