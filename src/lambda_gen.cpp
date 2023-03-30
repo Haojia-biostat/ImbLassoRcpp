@@ -6,6 +6,7 @@ using namespace Rcpp;
 //'
 //'This function computes the solutions for a decreasing sequence of values for \eqn{\lambda},
 //'starting at the smallest value \eqn{\lambda_{max}} for which the entire vector \eqn{\hat{\beta} = 0}.
+//'\eqn{\lambda_{max} is solved as \eqn{\max_l|<x_l, y>|}.
 //'Then the minimum value \eqn{\lambda_{min}} is determined as \eqn{\epsilon\lambda_{max}},
 //'where \eqn{\epsilon = 0.0001} if \code{nobs > nvars}, otherwise \eqn{\epsilon = 0.01}.
 //'A sequence of \eqn{K} values of \eqn{\lambda} decreasing from \eqn{\lambda_{max}} to \eqn{\lambda_{min}} on the log scale.
@@ -27,10 +28,11 @@ using namespace Rcpp;
 //'Journal of Statistical Software, Vol. 33(1), 1-22},
 //'\doi{}10.18637/jss.v033.i01.}
 //'
+//'@examples
+//'lambda_gen(matrix(rnorm(1000), ncol = 10), rbinom(100, 1, 0.1))
+//'
 //'@export
 
-// '@examples
-// 'lambda_gen(matrix(rnorm(1000), ncol = 10), rbinom(100, 1, 0.1))
 // [[Rcpp::export]]
 List lambda_gen(
      NumericMatrix X,
