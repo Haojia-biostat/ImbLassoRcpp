@@ -2,42 +2,40 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//'Generate the lambda sequence for LASSO regression
+//'Generate the lambda sequence for LASSO
 //'
-//'This function computes the solutions for a decreasing sequence of values for \eqn{\lambda},
-//'starting at the smallest value \eqn{\lambda_{max}} for which the entire vector \eqn{\hat{\beta} = 0}.
-//'\eqn{\lambda_{max} is solved as \eqn{\max_l|<x_l, y>|}.
-//'Then the minimum value \eqn{\lambda_{min}} is determined as \eqn{\epsilon\lambda_{max}},
-//'where \eqn{\epsilon = 0.0001} if \code{nobs > nvars}, otherwise \eqn{\epsilon = 0.01}.
-//'A sequence of \eqn{K} values of \eqn{\lambda} decreasing from \eqn{\lambda_{max}} to \eqn{\lambda_{min}} on the log scale.
+//'This function produces a decreasing lambda sequence with a length of \code{K} for LASSO,
+//'based on the feature matrix \code{X} and binary outcome \code{y}.
 //'
 //'@name lambda_gen
 //'
-//'@param X input matrix, of dimension nobs x nvars; each row is an observation vector.
-//'@param y binary response variable, positive outcome = 1 and negative outcome = 0.
-//'@param K number of lambdas, by default is 100.
+//'@param X feature matrix
+//'@param y binary outcome, where 1 = positive event and 0 = negative event
+//'@param K number of lambdas, default value is 100
 //'
 //'@return A list including:
-//'\item {Entry value} {\eqn{\lambda_{max}}}
-//'\item {Minimum ratio} {\eqn{\epsilon}}
-//'\item {Lambdas} {\eqn{K} values of \eqn{\lambda} decreasing from \eqn{\lambda_{max}} to \eqn{\lambda_{min}} on the log scale}
+//'\item{Entry value}{\eqn{\lambda_{max}}, the smallest value for which all coefficients are zero}
+//'\item{Minimum ratio}{\eqn{\lambda_{min}} as a fraction of \eqn{\lambda_{max}}}
+//'\item{Lambdas}{\code{K} values of \eqn{\lambda} decreasing from \eqn{\lambda_{max}} to \eqn{\lambda_{min}} on the log scale}
 //'
 //'@references
 //'Friedman, J., Hastie, T. and Tibshirani, R. (2008)
-//'\emph {Regularization Paths for Generalized Linear Models via Coordinate Descent (2010),
+//'\emph{Regularization Paths for Generalized Linear Models via Coordinate Descent (2010),
 //'Journal of Statistical Software, Vol. 33(1), 1-22},
-//'\doi{}10.18637/jss.v033.i01.}
+//'\doi{10.18637/jss.v033.i01.}
 //'
 //'@examples
-//'lambda_gen(matrix(rnorm(1000), ncol = 10), rbinom(100, 1, 0.1))
+//'X <- matrix(rnorm(1000), ncol = 10)
+//'y <- rbinom(100, 1, 0.1)
+//'lambda_gen(X, y, K = 15)
 //'
 //'@export
 
 // [[Rcpp::export]]
 List lambda_gen(
-     NumericMatrix X,
-     NumericVector y,
-     int K = 100
+     const NumericMatrix& X,
+     const NumericVector& y,
+     const int& K = 100
 ) {
   if(y.size() != X.nrow())
     stop("The length of outcome y is different from the number of rows of matrix X.");

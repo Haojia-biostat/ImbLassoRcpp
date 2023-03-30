@@ -2,24 +2,45 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//'SMOTE algorithm for minority class
+//'Apply SMOTE algorithm to the X of minority class
 //'
-//'This function generates synthetic examples for the minority class by kNN and interpolation
+//'This function generates new observations for the X of minority class in the binary outcome
+//'using the SMOTE (i.e., synthetic minority over-sampling technique) algorithm.
 //'
-//'Add details
+//'For each of the observations in minority class, \code{k} nearest neighbors will be defined
+//'by Euclidean distance, and the following steps will be repeated for \code{N} times:
+//'
+//'1. Randomly draw one of the k nearest neighbors;
+//'
+//'2. Take difference between the observation and the neighbor;
+//'
+//'3. Multiply the difference by a random number in \code{(0,1]};
+//'
+//'4. Add this difference to the observation to generate a new synthetic example in feature space;
+//'
+//'5. If \code{k < N}, put the neighbor back to the sampling pool.
 //'
 //'@name smote_minor_x
 //'
 //'@param X feature matrix
-//'@param k number of nearest neighbors to be considered, default value is 5
+//'@param k number of nearest neighbors to be identified, default value is 5
 //'@param N number of new synthetic examples to be generated for each observation, default value is 9
 //'
-//'@return A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
+//'@return A list including:
+//'\item{kNN}{matrix of the row index of nearest neighbors for each observation in \code{X}
+//'with \code{nrow(X)} rows and \code{k} columns}
+//'\item{Euclidean}{matrix of Euclidean distance with \code{nrow(X)} rows and columns}
+//'\item{Synthetic}{matrix of new synthetic examples with \code{nrow(X)*N} rows and \code{ncol(X)} columns}
 //'
+//'@references
+//'\url{https://medium.com/@corymaklin/synthetic-minority-over-sampling-technique-smote-7d419696b88c}
 //'
-//' @export
-//' @examples
-//' smote_minor_x(X = matrix(rnorm(100), 10))
+//'@examples
+//'X <- matrix(rnorm(50), ncol = 10)
+//'smote_minor_x(X, k = 3, N = 2)
+//'
+//'@export
+
 // [[Rcpp::export]]
 List smote_minor_x(
   const NumericMatrix& X,

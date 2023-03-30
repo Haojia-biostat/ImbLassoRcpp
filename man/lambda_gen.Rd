@@ -2,17 +2,33 @@
 % Please edit documentation in R/RcppExports.R
 \name{lambda_gen}
 \alias{lambda_gen}
-\title{calculate the entry level of lambda}
+\title{Generate the lambda sequence for LASSO}
 \arguments{
-\item{X}{input matrix, of dimension nobs x nvars; each row is an observation vector.}
+\item{X}{feature matrix}
 
-\item{y}{binary response variable, positive outcome = 1 and negative outcome = 0.}
+\item{y}{binary outcome, where 1 = positive event and 0 = negative event}
 
-\item{K}{number of lambdas, by default is 100.}
+\item{K}{number of lambdas, default value is 100}
 }
 \value{
-A number
+A list including:
+\item{Entry value}{\eqn{\lambda_{max}}, the smallest value for which all coefficients are zero}
+\item{Minimum ratio}{\eqn{\lambda_{min}} as a fraction of \eqn{\lambda_{max}}}
+\item{Lambdas}{\code{K} values of \eqn{\lambda} decreasing from \eqn{\lambda_{max}} to \eqn{\lambda_{min}} on the log scale}
 }
 \description{
-Calculate the smallest value for which all the beta equal to 0.
+This function produces a decreasing lambda sequence with a length of \code{K} for LASSO,
+based on the feature matrix \code{X} and binary outcome \code{y}.
+}
+\examples{
+X <- matrix(rnorm(1000), ncol = 10)
+y <- rbinom(100, 1, 0.1)
+lambda_gen(X, y)
+
+}
+\references{
+Friedman, J., Hastie, T. and Tibshirani, R. (2008)
+\emph{Regularization Paths for Generalized Linear Models via Coordinate Descent (2010),
+Journal of Statistical Software, Vol. 33(1), 1-22},
+\doi{10.18637/jss.v033.i01.}
 }
