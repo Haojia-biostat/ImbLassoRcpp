@@ -26,7 +26,7 @@
 #'@examples
 #'X <- matrix(rnorm(1000), ncol = 10)
 #'y <- rbinom(100, 1, 0.1)
-#'lambda_gen(X, y)
+#'lambda_gen(X, y, K = 15)
 #'
 #'@export
 NULL
@@ -69,8 +69,8 @@ lambda_gen <- function(X, y, K = 100L) {
 #'\url{https://medium.com/@corymaklin/synthetic-minority-over-sampling-technique-smote-7d419696b88c}
 #'
 #'@examples
-#'X <- matrix(rnorm(100), 10)
-#'smote_minor_x(X)
+#'X <- matrix(rnorm(50), ncol = 10)
+#'smote_minor_x(X, k = 3, N = 2)
 #'
 #'@export
 NULL
