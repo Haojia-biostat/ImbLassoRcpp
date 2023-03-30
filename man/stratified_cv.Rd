@@ -3,23 +3,23 @@
 \name{stratified_cv}
 \alias{stratified_cv}
 \title{Stratified cross-validation sampling}
-\usage{
-stratified_cv(y, k = 10L)
-}
 \arguments{
 \item{y}{binary outcome, where 1 = positive event and 0 = negative event}
 
 \item{k}{number of folds, default value is 10}
+
+\item{stratified}{logical flag for whether to ensure that each fold contains a proportional representation
+of each class or stratum, default value is TRUE}
 }
 \value{
-A list including new synthetic examples with \code{N*nrow(X)} rows and \code{ncol(X)} columns.
+A vector with the same length as \code{y} containing fold id from 1 to \code{k}
 }
 \description{
-This function assigns observations to k-fold cross validation.
-}
-\details{
-Add details
+This function splits the observations to k-fold cross validation.
 }
 \examples{
-stratified_cv(rbinom(2023, 1, 0.1), 10)
+y <- rbinom(2023, 1, 0.1)
+tapply(y, stratified_cv(y), sum)
+tapply(y, stratified_cv(y, stratified = F), sum)
+
 }
