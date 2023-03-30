@@ -18,13 +18,16 @@ smote(X, y, k = 5, N = 9, R = 1)
 \item{R}{size ratio of the majority class to be sampled to the SMOTEd minority class, default value is 1 so that the two classes are balanced}
 }
 \description{
-This function generates the full SMOTEd dataset with both positive and negative outcome.
+This function generates the SMOTEd dataset including both features \code{X} and outcome \code{y}, and both positive and negative outcome
 }
 \details{
 The output dataset is consist of three parts:
+
 1. All the original observations from the minority class (nobs = \code{sum(y)})
-2. Synthetic new examples for the minority class by interpolate N values out of k nearest neighbors identified by Euclidean distance (nobs = \code{sum(y)*N})
-3. Sampled observations with replacement of the majority class (nobs = \code{sum(y)\*(N+1)\*(R)})
+
+2. Synthetic new examples for the minority class (nobs = \code{sum(y)*N})
+
+3. Sampled observations with replacement of the majority class (nobs = \code{sum(y)*(N+1)*R})
 }
 \examples{
 X <- matrix(rnorm(1000), ncol = 10)
