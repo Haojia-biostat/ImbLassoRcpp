@@ -18,7 +18,7 @@ using namespace Rcpp;
 //'@examples
 //'y <- rbinom(2023, 1, 0.1)
 //'tapply(y, stratified_cv(y), sum)
-//'tapply(y, stratified_cv(y, stratified = F), sum)
+//'tapply(y, stratified_cv(y, stratified = FALSE), sum)
 //'
 //'@export
 

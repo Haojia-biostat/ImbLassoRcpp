@@ -2,12 +2,13 @@
 #'
 #' This functions plots the cross-validation curve, and upper and lower standard deviation curves.
 #'
-#' @param fitmat fitted \code{smote_cv_mseMatrix} object
+#' @param x fitted \code{smote_cv_mseMatrix} object
+#' @param \dots other arguments that can be passed to \code{plot}
 #'
 #' @export
 
-plot.cv.glmnet <- function(fitmat) {
-  x <- fitmat$lambda
-  y <- colMeans(fitmat[,-1])
+plot.cv.glmnet <- function(x, ...) {
+  x <- x[,1]
+  y <- rowMeans(x[,-1])
   plot(x, y, type = "l")
 }

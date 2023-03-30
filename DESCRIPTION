@@ -16,4 +16,7 @@ RoxygenNote: 7.2.3
 LinkingTo: 
     Rcpp,
     RcppArmadillo
-Imports: Rcpp
+Imports: 
+    glmnet,
+    methods,
+    Rcpp

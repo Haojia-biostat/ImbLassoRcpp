@@ -4,10 +4,12 @@
 \alias{plot.cv.glmnet}
 \title{plot the cross-validation curve produced by par_smote_cv_lasso}
 \usage{
-\method{plot}{cv.glmnet}(fitmat)
+\method{plot}{cv.glmnet}(x, ...)
 }
 \arguments{
-\item{fitmat}{fitted \code{smote_cv_mseMatrix} object}
+\item{x}{fitted \code{smote_cv_mseMatrix} object}
+
+\item{\dots}{other arguments that can be passed to \code{plot}}
 }
 \description{
 This functions plots the cross-validation curve, and upper and lower standard deviation curves.
