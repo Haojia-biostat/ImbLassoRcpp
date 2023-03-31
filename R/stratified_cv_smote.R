@@ -11,7 +11,7 @@
 #' @param N number of new synthetic examples to be generated for each observation, default value is 9
 #' @param R size ratio of the majority class to be sampled to the SMOTEd minority class, default value is 1 so that the two classes are balanced
 #'
-#' @return An object with class \code{"cv_smote_dataList"} including:
+#' @return An object with class \code{"cv_smote_data"} including:
 #' \item{train}{a list containing \code{k} training datasets, with or without SMOTE applied}
 #' \item{test}{a list containing \code{k} test datasets}
 #'
@@ -51,12 +51,6 @@ stratified_cv_smote <- function(
   if(!all.equal(sort(unique(y)), c(0,1)))
     stop("y should be only consist of 1 and 0.")
 
-  # check distribution of y
-  if(mean(y) > 0.5)
-    warning(paste0("The proportion of the positive outcome (", round(100*mean(y), 1), "%) is larger than 50%. y = 1 does not seem to be the minority class."))
-  else if(mean(y) > 0.2)
-    warning(paste0("The proportion of the positive outcome (", round(100*mean(y), 1), "%) is larger than 20%, SMOTE might not be necessary."))
-
   # stratified cross-validation
   fold <- stratified_cv(y, k_cv, stratified = stratified)
 
@@ -74,7 +68,7 @@ stratified_cv_smote <- function(
   res$test <- lapply(1:k_cv, \(i) cbind(X[fold == i,], y[fold == i]) |> as.data.frame() |> stats::setNames(c(colnames(X), "y")))
 
   # define class of the output
-  class(res) <- c("cv_smote_dataList", "list")
+  class(res) <- c("cv_smote_data", "list")
 
   return(res)
 }

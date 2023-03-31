@@ -49,12 +49,6 @@ smote <- function(
   if(!all.equal(sort(unique(y)), c(0,1)))
     stop("y should be only consist of 1 and 0.")
 
-  # check distribution of y
-  if(mean(y) > 0.5)
-    warning(paste0("The proportion of the positive outcome (", round(100*mean(y), 1), "%) is larger than 50%. y = 1 does not seem to be the minority class."))
-  else if(mean(y) > 0.2)
-    warning(paste0("The proportion of the positive outcome (", round(100*mean(y), 1), "%) is larger than 20%, SMOTE might not be necessary."))
-
   res <- rbind(
     cbind(X[sample(which(y == 0), R*(N+1)*sum(y), replace = T),], 0),
     cbind(X[which(y == 1),], 1),

@@ -30,7 +30,7 @@ using namespace Rcpp;
 //'lambda_gen(X, y, K = 15)
 //'
 //'@export
-
+//'
 // [[Rcpp::export]]
 List lambda_gen(
      const NumericMatrix& X,

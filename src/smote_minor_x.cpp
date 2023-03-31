@@ -40,7 +40,7 @@ using namespace Rcpp;
 //'smote_minor_x(X, k = 3, N = 2)
 //'
 //'@export
-
+//'
 // [[Rcpp::export]]
 List smote_minor_x(
   const NumericMatrix& X,

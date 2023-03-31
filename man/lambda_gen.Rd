@@ -3,6 +3,9 @@
 \name{lambda_gen}
 \alias{lambda_gen}
 \title{Generate the lambda sequence for LASSO}
+\usage{
+lambda_gen(X, y, K = 100L)
+}
 \arguments{
 \item{X}{feature matrix}
 

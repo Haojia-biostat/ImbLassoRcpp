@@ -1,36 +1,32 @@
 ---
-output: github_document
+title: "Introduction to parameter tuning and regression"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to parameter tuning and regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%",
-  warning = F,
-  message = F
+  comment = "#>"
 )
 ```
 
-# ImbLassoRcpp
-
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/UofUEpiBio/ImbLassoRcpp/workflows/R-CMD-check/badge.svg)](https://github.com/UofUEpiBio/ImbLassoRcpp/actions)
-<!-- badges: end -->
-
-The goal of ImbLassoRcpp is to handle imbalanced distribution in the binary outcome by employing stratified cross-validation and/or SMOTE
-
-## Installation
-
-You can install the development version of ImbLassoRcpp like so:
-
-```{r, eval=FALSE}
-# install.package("devtools")
-devtools::install_github("Haojia-biostat/ImbLassoRcpp")
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
+
+
+```{r setup}
+library(ImbLassoRcpp)
+```
+
+The goal of ImbLassoRcpp is to handle imbalanced distribution in the binary outcome by employing stratified cross-validation and/or SMOTE.
 
 ## Example
 
@@ -58,6 +54,10 @@ y <- as.integer(imbdata$Class == "bus")
 X <- data.frame(lapply(imbdata[,which(colnames(imbdata) != "Class")], scale))
 ```
 
+`par_smote_cv_lasso` employs parallel computing to perform k-fold cross-validation for LASSO regression on datasets with an imbalanced binary outcome, enabling the tuning of the regularization parameter,\lambda.
+
+When the lambda sequence is not supplied, `lambda_gen`, embeded in the functions, will produce a decreasing lambda sequence with a length of K for LASSO, based on the feature matrix X and binary outcome y.
+
 ```{r}
 library(ImbLassoRcpp)
 
@@ -78,6 +78,8 @@ smote_cv_lasso_list <- lapply(cv_smote_data_list, par_smote_cv_lasso)
 
 ### 1. Parameter tuning
 
+`plot.cv.smote.lasso`
+
 ```{r, fig.width=8, fig.height=6}
 par(mfrow = c(2,2))
 plot.cv.smote.lasso(smote_cv_lasso_list[[1]], main = "Stratified = F, SMOTE = F")
@@ -87,18 +89,22 @@ plot.cv.smote.lasso(smote_cv_lasso_list[[4]], main = "Stratified = T, SMOTE = T"
 
 ```
 
+`print.cv.smote.lasso`
+
 ```{r}
-# print.cv.smote.lasso(smote_cv_lasso_list[[1]])
-# print.cv.smote.lasso(smote_cv_lasso_list[[2]])
-# print.cv.smote.lasso(smote_cv_lasso_list[[3]])
+print.cv.smote.lasso(smote_cv_lasso_list[[1]])
+print.cv.smote.lasso(smote_cv_lasso_list[[2]])
+print.cv.smote.lasso(smote_cv_lasso_list[[3]])
 print.cv.smote.lasso(smote_cv_lasso_list[[4]])
 ```
 
 ### 2. Final model
 
+`summary.cv.smote.lasso`
+
 ```{r}
-# summary.cv.smote.lasso(smote_cv_lasso_list[[1]])
-# summary.cv.smote.lasso(smote_cv_lasso_list[[2]])
-# summary.cv.smote.lasso(smote_cv_lasso_list[[3]])
+summary.cv.smote.lasso(smote_cv_lasso_list[[1]])
+summary.cv.smote.lasso(smote_cv_lasso_list[[2]])
+summary.cv.smote.lasso(smote_cv_lasso_list[[3]])
 summary.cv.smote.lasso(smote_cv_lasso_list[[4]])
 ```

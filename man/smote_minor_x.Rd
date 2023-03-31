@@ -3,6 +3,9 @@
 \name{smote_minor_x}
 \alias{smote_minor_x}
 \title{Apply SMOTE algorithm to the X of minority class}
+\usage{
+smote_minor_x(X, k = 5L, N = 9L)
+}
 \arguments{
 \item{X}{feature matrix}
 

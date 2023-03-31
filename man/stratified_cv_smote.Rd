@@ -33,7 +33,7 @@ stratified_cv_smote(
 \item{R}{size ratio of the majority class to be sampled to the SMOTEd minority class, default value is 1 so that the two classes are balanced}
 }
 \value{
-An object with class \code{"cv_smote_dataList"} including:
+An object with class \code{"cv_smote_data"} including:
 \item{train}{a list containing \code{k} training datasets, with or without SMOTE applied}
 \item{test}{a list containing \code{k} test datasets}
 }

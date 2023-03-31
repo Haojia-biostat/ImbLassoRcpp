@@ -21,7 +21,7 @@ using namespace Rcpp;
 //'tapply(y, stratified_cv(y, stratified = FALSE), sum)
 //'
 //'@export
-
+//'
 // [[Rcpp::export]]
 IntegerVector stratified_cv(
     const IntegerVector& y,

@@ -1,0 +1,71 @@
+---
+title: "Introduction to data preparation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to data preparation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r setup}
+library(ImbLassoRcpp)
+```
+
+The goal of ImbLassoRcpp is to handle imbalanced distribution in the binary outcome by employing stratified cross-validation and/or SMOTE
+
+# Data preparation
+
+## Stratified cross-validation
+
+`stratified_cv` can be used to split the observations to k-fold cross validation. It contains an option of `stratified`, which is a logical flag for whether to ensure that each fold contains a proportional representation of each class or stratum. The default value is TRUE, as we want to handle the imbalanced distribution issue in our data. Below is the example of this function with and without `stratified` enabled.
+
+```{r}
+y <- rbinom(2023, 1, 0.1)
+tapply(y, stratified_cv(y), sum)
+tapply(y, stratified_cv(y, stratified = FALSE), sum)
+```
+
+## SMOTE
+
+`smote_minor_x` is a function which generates new observations for the X of minority class in the binary outcome using the SMOTE (i.e., synthetic minority over-sampling technique) algorithm. Users can set the number `k`, which is the number of nearest neighbors to be identified (default value is 5) and the the number `N`, which is the number new synthetic examples to be generated for each observation (default value is 9). Below is an example.
+
+```{r}
+X <- matrix(rnorm(50), ncol = 10)
+smote_minor_x(X, k = 3, N = 2)
+```
+
+`smote`, based on `smote_minor_x`, generates the SMOTEd dataset including both features X and outcome y, and both positive and negative outcome. This function enables users to not only generate the analysis data with employing cross-validation first using `stratified_cv_smote` (see below), but also employing SMOTE first.
+
+```{r}
+X <- matrix(rnorm(1000), ncol = 10)
+y <- rbinom(100, 1, 0.1)
+table(y)
+smoted_data <- smote(X, y)
+table(smoted_data$y)
+```
+
+## Combine stratified cross-validation and SMOTE
+
+`stratified_cv_smote` function can prepare the data of cross-validation for parameter tuning of \lambda in LASSO regression. It provides options of whether to use stratified cross-validation on the input data or SMOTE algorithm on the training sets. With these two options added to the function, there are four possible combinations to process the data. The function will output a list with `train` and `test` set for each of the fold in the cross-validation.
+
+```{r}
+X <- matrix(rnorm(1000), ncol = 10)
+y <- rbinom(100, 1, 0.1)
+stratified_cv_smote(X, y)
+```
+

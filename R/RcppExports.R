@@ -29,8 +29,7 @@
 #'lambda_gen(X, y, K = 15)
 #'
 #'@export
-NULL
-
+#'
 lambda_gen <- function(X, y, K = 100L) {
     .Call(`_ImbLassoRcpp_lambda_gen`, X, y, K)
 }
@@ -73,8 +72,7 @@ lambda_gen <- function(X, y, K = 100L) {
 #'smote_minor_x(X, k = 3, N = 2)
 #'
 #'@export
-NULL
-
+#'
 smote_minor_x <- function(X, k = 5L, N = 9L) {
     .Call(`_ImbLassoRcpp_smote_minor_x`, X, k, N)
 }
@@ -98,8 +96,7 @@ smote_minor_x <- function(X, k = 5L, N = 9L) {
 #'tapply(y, stratified_cv(y, stratified = FALSE), sum)
 #'
 #'@export
-NULL
-
+#'
 stratified_cv <- function(y, k = 10L, stratified = TRUE) {
     .Call(`_ImbLassoRcpp_stratified_cv`, y, k, stratified)
 }
