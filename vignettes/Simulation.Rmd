@@ -1,0 +1,127 @@
+---
+title: "Comparison of feature selection result by simulation submitted via `slurmR`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparison of feature selection result by simulation submitted via `slurmR`}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+We want to compare the feature selection results across the four different combinations of `stratified` and `SMOTE`.
+
+To do this, we are going to set up a simulation analysis. The job will be submitted by `slurmR`.
+
+Taking `stratified = F` and `SMOTE = F` as example, we are going to simulate `B = 100` data sets with `N = 50000` observations and `d = 50` features as candidates, out of which 5 are predictive. After simulating `X` matrix by specify the mean values and covariance matrix. We employ `optim` function to locate the coefficients of intercept, each of the 5 predictive variables (), and the iteration between `X[,1]` and `X[,2]`.
+
+```{r, eval=FALSE}
+njobs <- 2
+
+# number of simulations
+B <- 100
+# number of observations
+N <- 50000
+# number of features
+d <- 50
+# proportion of event
+prop <- 0.01
+
+# simulate predictive features
+X <- MASS::mvrnorm(
+  n = N,
+  mu = rep(0,5),
+  Sigma = matrix(c(
+    # Z1,  Z2,  Z3,  Z4,  Z5
+    1.0, 0.0, 0.2, 0.0, 0.0, # Z1
+    0.0, 1.0, 0.0, 0.2, 0.0, # Z2
+    0.2, 0.0, 1.0, 0.0, 0.0, # Z3
+    0.0, 0.2, 0.0, 1.0, 0.0, # Z4
+    0.0, 0.0, 0.0, 0.0, 1.0  # Z5
+  ), nrow = 5, byrow = T)
+)
+
+# objective function (loss function)
+fun <- function(b, target_prop) {
+  Y <- rbinom(100000, 1, prob = plogis(b[1] + X %*% b[2:6] + X[,1]*X[,2]*b[7]))
+  (mean(Y) - target_prop)^2
+}
+
+# finding the closest value
+b <- optim(par = rep(0,7), fn = fun, target_prop = prop)$par
+
+# # Are we getting there?
+# message(
+#   "Target is     : ", prop, "\n",
+#   "Proposed value: ", paste(b, collapse = ", "), "\n",
+#   "We got        : ", mean(rbinom(100000, 1, prob = plogis(b[1] + X %*% b[2:6] + X[,1]*X[,2]*b[7])))
+# )
+```
+
+The we define this `imb_feature_selection` function, which will return the feature selection result as a vector of character.
+
+```{r, eval=FALSE}
+library(ImbLassoRcpp)
+
+imb_feature_selection <- function(i, N, d) {
+  # simulate predicitve features
+  # simulate predictive features
+  X <- MASS::mvrnorm(
+    n = N,
+    mu = rep(0,5),
+    Sigma = matrix(c(
+      # Z1,  Z2,  Z3,  Z4,  Z5
+      1.0, 0.0, 0.2, 0.0, 0.0, # Z1
+      0.0, 1.0, 0.0, 0.2, 0.0, # Z2
+      0.2, 0.0, 1.0, 0.0, 0.0, # Z3
+      0.0, 0.2, 0.0, 1.0, 0.0, # Z4
+      0.0, 0.0, 0.0, 0.0, 1.0  # Z5
+    ), nrow = 5, byrow = T)
+  )
+  
+  # simulate binary outcome
+  Y <- rbinom(N, 1, plogis(b[1] + X %*% b[2:6] + X[,1]*X[,2]*b[7]))
+  
+  # simulate non-predictive features
+  Z <- matrix(rnorm(N*(d-5)), ncol = d-5)
+  
+  simdata <- data.frame(Y, X, Z)
+  colnames(simdata) <- c("Y", paste0("X", 1:5), paste0("Z", 1:(d-5)))
+  
+  summary.cv.smote.lasso(par_smote_cv_lasso(stratified_cv_smote(
+    as.matrix(simdata[,-1]), simdata[,1], stratified = F, SMOTE = F
+  )))$`feature selected`
+}
+
+```
+
+Finally, we submit the job using `slurmR::Slurm_lapply` and save the results as .rds file.
+
+```{r, eval=FALSE}
+# Setting up slurmR
+library(slurmR) # This also loads the parallel package
+
+# Approximation
+ans <- Slurm_lapply(
+  1:B, imb_feature_selection,
+  N = N, d = d,
+  export = c("b"),
+  njobs = njobs,
+  mc.cores = 10,
+  plan  = "collect",
+  tmp_path = "/scratch/general/nfs1/u6034070", # This is where all temp files will be exported
+  sbatch_opt = list(
+    account = "notchpeak-shared-short",
+    partition = "notchpeak-shared-short"
+  )
+)
+
+saveRDS(ans, "Sim50_d50_prop1perc_FF.rds")
+
+```
